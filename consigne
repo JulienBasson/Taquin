@@ -14,7 +14,7 @@ Mode hors-ligne
 8 0 7
 
 - ecriture dans un fichier texte sortie
-	- chemin de résolution forme (Bas / Haut / Doite / Gauche)
+	- chemin de résolution forme (Bas / Haut / Droite / Gauche)
 	- nb min de couprs (entier)
 	- structure de la solution (BHGD)
 	- statistiques (4 stratégies de résolution) :
