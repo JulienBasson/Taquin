@@ -10,9 +10,9 @@ import java.util.Map;
 public class Solvability {
 		
 	public boolean isSolvent(int[][] taquin){
-		// A map wich contain the value in order with the value in the configuration
+		// A map which contain the value in order with the value in the configuration
 		Map<Integer, Integer> permutation = new HashMap<Integer, Integer>();
-		// The value wich te case should have
+		// The value which te case should have
 		int currentCase = 1;
 		
 		for(int i = 0; i < taquin.length; i++){

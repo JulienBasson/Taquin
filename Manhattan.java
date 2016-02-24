@@ -16,19 +16,22 @@ public class Manhattan implements Heuristic {
         }
     }
 
-    public double distance(State state){
+    public double costLeft(State state){
         if(state.size() != size)
             return Double.POSITIVE_INFINITY;
 
         int total = 0;
         for (int j = 0; j < state.size(); j++) {
             for (int i = 0; i < state.size(); i++) {
+                Point currentPosition = new Point(i, j);
                 int currentValue = state.getValue(i, j);
-                Point target = targetCoords.get(currentValue);
-                int inc = Math.abs(i - target.x) + Math.abs(j - target.y);
-                total += inc;
+                Point targetPosition = targetCoords.get(currentValue);
+                total += distance(currentPosition, targetPosition);
             }
         }
         return total;
+    }
+    public static double distance(Point a, Point b){
+        return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
     }
 }
