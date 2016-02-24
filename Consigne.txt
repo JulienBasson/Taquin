@@ -2,63 +2,70 @@ Par groupe de 3-5 ~6 groupes
 
 Taquin : n-puzzle k >= 3, n = k * k - 1
 
-3 | 1 | 5	1 | 2 | 3
-4 | 2 | 6  =>	4 | 5 | 6
-8 | 0 | 7	7 | 8 | 0
+3 1 5     1 2 3
+4 2 6  => 4 5 6
+8 0 7     7 8 0
 
 
 Mode hors-ligne
 - lire un fichier texte contenant la configuration initiale :
+```
+3 // size
 3 1 5
 4 2 6
 8 0 7
+```
 
 - ecriture dans un fichier texte sortie
-	- chemin de résolution forme (Bas / Haut / Droite / Gauche)
-	- nb min de couprs (entier)
-	- structure de la solution (BHGD)
-	- statistiques (4 stratégies de résolution) :
-		- nb de configuration visitées
-		- les strucutres de données utilisées
-			- taille maximale
-			- nb d'opérations (insertion / suppression)
-		- tps cpu
+    - chemin de résolution forme (Bas / Haut / Droite / Gauche)
+    - nb min de couprs (entier)
+    - structure de la solution (BHGD)
+    - statistiques (4 stratégies de résolution) :
+        - nb de configuration visitées
+        - les strucutres de données utilisées
+            - taille maximale
+            - nb d'opérations (insertion / suppression)
+        - tps cpu
 Stratégies :
-	- Récursive :
-		- Profondeur d'abord : explore les sommets les plus profonds dans l'arbre
-		- Largeur d'abord : Explore tous le niveau d'un arbre avant de descendre
-		- Meilleur d'abord : 
-		- Aléatoire : Parcours un sommet non encore visité
+    - Récursive :
+        - Profondeur d'abord : explore les sommets les plus profonds dans l'arbre
+        - Largeur d'abord : Explore tous le niveau d'un arbre avant de descendre
+        - Meilleur d'abord : 
+        - Aléatoire : Parcours un sommet non encore visité
 
 Branch and Bound   | séparation et évaluation de la solution
-	   Price   |
-	   Cut	   |
+       Price   |
+       Cut     |
 
 Définition de la borne :
-	minisation donc borne inférieure / associé à une solution non réalisable la plus forte possible pour explorer le moins de sommet possible
-		|=> fonction manhatan
+    minisation donc borne inférieure / associé à une solution non réalisable la plus forte possible pour explorer le moins de sommet possible
+        |=> fonction manhatan
 
 Mode interactif (Fenetre)
 - demander taille du puzzle
 - demander configuration initiale
 - joueur joue
 - aide ?
-	- peut demander quel est le meilleur prochain coup
-	- résoud le problème jusqu'au bout (nb de coup joue et nb de coup restant)
+    - peut demander quel est le meilleur prochain coup
+    - résoud le problème jusqu'au bout (nb de coup joue et nb de coup restant)
 
 Rapport (10 pages max)
-	- algo utilisés
+    - algo utilisés
+    DFS vs IDDFS vs A* vs IDA*
 
 
 Rendre:
-	./Prog/Sources.java
-	./Data/.......;
-	./Results/......
-	./Report/.........
-	./Slides/
+    ./Prog/Sources.java
+    ./Data/.......;
+    ./Results/......
+    ./Report/.........
+    ./Slides/
 
 Docs:
 http://www.grappa.univ-lille3.fr/~torre/Enseignement/Cours/Intelligence-Artificielle/resolution.php
 http://www.enseignement.polytechnique.fr/informatique/ARCHIVES/IF/projets/pottier/sujet.html
 http://www.cokeandcode.com/main/tutorials/path-finding/
 http://xaviermichel.github.io/algorithme/2010/08/27/r%C3%A9soudre-le-taquin-%C3%A0-l%27aide-de-l%27algorithme-du-astar/
+https://heuristicswiki.wikispaces.com/Admissible+Heuristic
+https://heuristicswiki.wikispaces.com/IDA*
+https://heuristicswiki.wikispaces.com/Manhattan+Distance
