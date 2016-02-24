@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.awt.Point;
 
 public class State {
@@ -7,31 +9,34 @@ public class State {
     private final int size;
     private Point gap;
 
-    private void generateBoard(List<Integer> elements){
+    private void buildBoard(List<Integer> elements){
         assert elements.size() == size*size;
         int n = 0;
         for (int i = 0; i < size; i++) {
             board.add(new ArrayList<Integer>());
             for (int j = 0; j < size; j++) {
-                board.get(i).set(j, elements.get(n++));
+                int toAdd = elements.get(n++);
+                if(toAdd == 0) this.gap = new Point(j, i);
+                board.get(i).add(toAdd);
             }
         }
     }
 
     public State(int size, List<Integer> elements){
         this.size = size;
-        generateBoard(elements);
+        buildBoard(elements);
     }
 
     public State(int size){
         List<Integer> elements = new ArrayList<Integer>();
-        for (int i = 1; i < size*size-1; i++) {
+        for (int i = 1; i < size*size; i++) {
             elements.add(i);
         }
         elements.add(0);
 
         this.size = size;
-        generateBoard(elements);
+        this.board = new ArrayList<ArrayList<Integer>>();
+        buildBoard(elements);
     }
 
     public boolean equals(State other){
@@ -41,6 +46,19 @@ public class State {
                 return false;
         }
         return true;
+    }
+
+    public Set<Direction> availableMoves(){
+        Set<Direction> result = new TreeSet<Direction>();
+        if(gap.y > 0)
+            result.add(Direction.DOWN);
+        if(gap.y < size-1)
+            result.add(Direction.UP);
+        if(gap.x > 0)
+            result.add(Direction.RIGHT);
+        if(gap.x < size-1)
+            result.add(Direction.LEFT);
+        return result;
     }
 
     public void move(Direction dir){
@@ -83,7 +101,14 @@ public class State {
         return size;
     }
 
-    public static State goal(int size){
-        return new State(size);
+    public String toString() {
+        String result = "";
+        for (ArrayList<Integer> row : board) {
+            for (Integer i : row) {
+                result += i + " ";
+            }
+            result = result.substring(0, result.length()-1) + '\n';
+        }
+        return result;
     }
 }
