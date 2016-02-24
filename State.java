@@ -101,6 +101,14 @@ public class State {
         return size;
     }
 
+    public int getValue(int x, int y){
+        return board.get(y).get(x);
+    }
+
+    public int getValue(Point coord){
+        return getValue(coord.x, coord.y);
+    }
+
     public String toString() {
         String result = "";
         for (ArrayList<Integer> row : board) {

@@ -1,6 +1,3 @@
-public abstract class Heuristic {
-    public abstract double distance(State a, State b);
-    public double costLeft(State a){
-        return distance(a, State.goal(a.size()));
-    }
+public interface Heuristic {
+    public double distance(State a); // returns the distance to the set target
 }

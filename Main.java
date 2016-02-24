@@ -1,14 +1,23 @@
 public class Main {
     public static void main(String[] args) {
         State state = new State(3);
-        System.out.println(state);
+        Heuristic he = new Manhattan(state);
+
         System.out.println(state.availableMoves());
+        System.out.println(he.distance(state));
+        System.out.println(state);
+
         state.move(Direction.DOWN);
-        System.out.println(state);
+
         System.out.println(state.availableMoves());
+        System.out.println(he.distance(state));
+        System.out.println(state);
+
         state.move(Direction.RIGHT);
         state.move(Direction.RIGHT);
-        System.out.println(state);
+
         System.out.println(state.availableMoves());
+        System.out.println(he.distance(state));
+        System.out.println(state);
     }
 }
