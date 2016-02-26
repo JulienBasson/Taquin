@@ -2,10 +2,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.lang.StringBuilder;
 
 /**
  * Class which test the solvability of a configuration
- * @author bassonj
  */
 public class Solvability {
 		
@@ -51,7 +51,6 @@ public class Solvability {
 				currentValue = permutation.get(currentValue);
 				// supprime la valeur de la liste des permutations
 				permutation.remove(currentValue);
-				permutation.
 			}
 			
 			cycles.add(currentCycle);
@@ -70,17 +69,14 @@ public class Solvability {
 		}
 		
 		return sum % 2 == 0;
-		
-		
-		//return true;
 	}
 	
 	private String affichePermutation(Map<Integer, Integer> permutation){
-		String s = "";
+		StringBuilder builder = new StringBuilder("");
 		for(Object key : permutation.keySet().toArray()){
-			s += key + " => " + permutation.get(key) + "\n"; 
+			builder.append(key + " => " + permutation.get(key) + "\n"); 
 		}
 		
-		return s;
+		return builder.toString();
 	}
 }
