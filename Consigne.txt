@@ -51,7 +51,7 @@ Mode interactif (Fenetre)
 
 Rapport (10 pages max)
     - algo utilisés
-    DFS vs IDDFS vs A* vs IDA*
+    DFS vs IDDFS vs A* vs IDA* vs B&B
 
 
 Rendre:
@@ -62,6 +62,7 @@ Rendre:
     ./Slides/
 
 Docs:
+http://www.cs.ubc.ca/~hutter/teaching/cpsc322/2-Search6.pdf
 http://www.grappa.univ-lille3.fr/~torre/Enseignement/Cours/Intelligence-Artificielle/resolution.php
 http://www.enseignement.polytechnique.fr/informatique/ARCHIVES/IF/projets/pottier/sujet.html
 http://www.cokeandcode.com/main/tutorials/path-finding/
