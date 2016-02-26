@@ -2,9 +2,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.Iterator;
 import java.awt.Point;
 
-public class State {
+public class State implements Iterable<Integer> {
     private ArrayList<ArrayList<Integer>> board;
     private final int size;
     private Point gap;
@@ -24,6 +25,7 @@ public class State {
 
     public State(int size, List<Integer> elements){
         this.size = size;
+        this.board = new ArrayList<ArrayList<Integer>>();
         buildBoard(elements);
     }
 
@@ -109,6 +111,28 @@ public class State {
         return getValue(coord.x, coord.y);
     }
 
+    public Point gapPosition(){
+        return gap;
+    }
+
+    public int inversionCount(){
+        int total = 0;
+        for (StateIterator i = new StateIterator(0, 0); i.hasNext();) {
+            int currentVal = i.next();
+            Point currentPos = i.position();
+
+            if(currentVal != 0){
+                for (StateIterator j = new StateIterator(currentPos); j.hasNext();) {
+                    int ahead = j.next();
+                    if(ahead < currentVal && ahead != 0){
+                        ++total;
+                    }
+                }
+            }
+        }
+        return total;
+    }
+
     public String toString() {
         String result = "";
         for (ArrayList<Integer> row : board) {
@@ -118,5 +142,35 @@ public class State {
             result = result.substring(0, result.length()-1) + '\n';
         }
         return result;
+    }
+
+    public Iterator<Integer> iterator(){
+        return new StateIterator(0, 0);
+    }
+
+    private class StateIterator implements Iterator<Integer>{
+        Point next;
+        public StateIterator(Point startingState){
+            next = new Point(startingState);
+        }
+        public StateIterator(int x, int y){
+            next = new Point(x, y);
+        }
+        public Point position(){
+            return next;
+        }
+        public boolean hasNext(){
+            return next.y < size;
+        }
+        public Integer next(){
+            int val = getValue(next);
+            if(next.x < size-1)
+                ++next.x;
+            else{
+                ++next.y;
+                next.x = 0;
+            }
+            return val;
+        }
     }
 }
