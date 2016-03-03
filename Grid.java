@@ -40,13 +40,8 @@ public class Grid {
 		}
 	}
 
-	public Collection<Node> getTiles(){
-		Collection<Node> rectangles = new ArrayList<Node>();
-		for(Tile currentTile : tiles.values()) {
-			rectangles.add(currentTile.getSquare());
-		}
-
-		return rectangles;
+	public Collection<Tile> getTiles(){
+		return tiles.values();
 	}
 
 	public void move(Direction dir) {

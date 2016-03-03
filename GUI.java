@@ -29,19 +29,22 @@ public class GUI extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		int nbOfTiles = 3;
-		int size = 300;
+		int size = 600;
 		
 		grid = new Grid(nbOfTiles, size, new State(nbOfTiles));
 		
-		Group group = new Group(grid.getTiles().toArray(new Node[grid.getTiles().size()]));
+		Group group = new Group();
+		for (Tile tile : grid.getTiles()) {
+		    group.getChildren().add(tile.getSquare());
+		    group.getChildren().add(tile.getText());
+		}
 		
 		primaryStage.setTitle("Taquin");
 		Scene scene = new Scene(group, size, size);
 		moveTileOnKeyPress(scene);
 		primaryStage.setScene(scene);
+		primaryStage.setResizable(false);
 		primaryStage.show();
-		
-		
 	}
 	
 	private void moveTileOnKeyPress(Scene scene) {

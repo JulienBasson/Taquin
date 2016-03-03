@@ -5,46 +5,42 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+import javafx.scene.text.Text;
+import javafx.scene.text.Font;
 
 public class Tile {
 
 	private Rectangle square;
-	private String id;
+	private Text id;
 	private int size;
 	private static final Duration TRANSLATE_DURATION = Duration.seconds(0.10);
-	private final TranslateTransition transition;
+	private final TranslateTransition transitionSquare;
+	private final TranslateTransition transitionId;
 	private Point coord;
 	
 	public Tile(String id, int size, Point coord){
-		this.id = id;
+		
 		this.coord = coord;
-		square = new Rectangle(size, size);
 		this.size = size;
-		square.setArcHeight(15);
-		square.setArcWidth(15);
+		square = new Rectangle(size, size);
+		square.setArcHeight(25);
+		square.setArcWidth(25);
 		square.setOpacity(0.5);
-		transition = createTranslateTransition();
+		this.id = new Text(coord.x + size/3, coord.y + size/1.5, id);
+		this.id.setFont(new Font(size/2));
+		transitionSquare = createTranslateTransitionSquare();
+		transitionId = createTranslateTransitionId();
 		setPosition(coord);
 	}
 
-	private TranslateTransition createTranslateTransition() {
-		final TranslateTransition transition = new TranslateTransition(TRANSLATE_DURATION, square);
-		transition.setOnFinished(new EventHandler<ActionEvent>() {
-			@Override public void handle(ActionEvent t) {
-				square.setX(coord.getX());
-				square.setY(coord.getY());
-				square.setTranslateX(0);
-				square.setTranslateY(0);
-			}
-		});
-		return transition;
-	}
-
 	private void setPosition(Point coord) {
-        transition.setToX(coord.x - this.coord.x);
-        transition.setToY(coord.y - this.coord.y);
+        transitionSquare.setToX(coord.x - this.coord.x);
+        transitionSquare.setToY(coord.y - this.coord.y);
+        transitionId.setToX(coord.x - this.coord.x);
+        transitionId.setToY(coord.y - this.coord.y);
 		this.coord = coord;
-		transition.playFromStart();
+		transitionSquare.playFromStart();
+		transitionId.playFromStart();
 	}
 	
 	public void move(Direction dir)	{
@@ -63,10 +59,38 @@ public class Tile {
 			break;
 		}
 	}
-	
-	
 
 	public Rectangle getSquare() {
 		return square;
+	}
+	
+	public Text getText() {
+		return id;
+	}
+	
+	private TranslateTransition createTranslateTransitionSquare() {
+		final TranslateTransition transition = new TranslateTransition(TRANSLATE_DURATION, square);
+		transition.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override public void handle(ActionEvent t) {
+				square.setX(coord.getX());
+				square.setY(coord.getY());
+				square.setTranslateX(0);
+				square.setTranslateY(0);
+			}
+		});
+		return transition;
+	}
+	
+	private TranslateTransition createTranslateTransitionId() {
+		final TranslateTransition transition = new TranslateTransition(TRANSLATE_DURATION, id);
+		transition.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override public void handle(ActionEvent t) {
+				id.setX(coord.getX() + size/3);
+				id.setY(coord.getY() + size/1.5);
+				id.setTranslateX(0);
+				id.setTranslateY(0);
+			}
+		});
+		return transition;
 	}
 }
