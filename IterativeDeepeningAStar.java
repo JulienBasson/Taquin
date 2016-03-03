@@ -45,7 +45,7 @@ public class IterativeDeepeningAStar implements Algorithm {
         return min;
     }
 
-    class Path{
+    private class Path{
         public Path(List<Direction> path, double cost, boolean found){
             this.path = path;
             this.cost = cost;
