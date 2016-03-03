@@ -23,6 +23,12 @@ public class State implements Iterable<Integer> {
         }
     }
 
+    public State(State toCopy){
+        this.size = toCopy.size;
+        this.gap = new Point(toCopy.gap);
+        this.board = new ArrayList<ArrayList<Integer>>(toCopy.board);
+    }
+
     public State(int size, List<Integer> elements){
         this.size = size;
         this.board = new ArrayList<ArrayList<Integer>>();
@@ -63,40 +69,36 @@ public class State implements Iterable<Integer> {
         return result;
     }
 
-    public void move(Direction dir){
+    public State move(Direction dir){
+        State result = new State(this);
         int block;
         switch (dir) {
             case UP: // move bottom block up
-                block = board.get(gap.y+1).get(gap.x);
-                board.get(gap.y).set(gap.x, block);
-                board.get(gap.y+1).set(gap.x, 0);
-                ++gap.y;
+                block = result.board.get(gap.y+1).get(gap.x);
+                result.board.get(gap.y).set(gap.x, block);
+                result.board.get(gap.y+1).set(gap.x, 0);
+                ++result.gap.y;
                 break;
             case DOWN: // move top block down
-                block = board.get(gap.y-1).get(gap.x);
-                board.get(gap.y).set(gap.x, block);
-                board.get(gap.y-1).set(gap.x, 0);
-                --gap.y;
+                block = result.board.get(gap.y-1).get(gap.x);
+                result.board.get(gap.y).set(gap.x, block);
+                result.board.get(gap.y-1).set(gap.x, 0);
+                --result.gap.y;
                 break;
             case RIGHT: // move left block right
-                block = board.get(gap.y).get(gap.x-1);
-                board.get(gap.y).set(gap.x, block);
-                board.get(gap.y).set(gap.x-1, 0);
-                --gap.x;
+                block = result.board.get(gap.y).get(gap.x-1);
+                result.board.get(gap.y).set(gap.x, block);
+                result.board.get(gap.y).set(gap.x-1, 0);
+                --result.gap.x;
                 break;
             case LEFT: // move right block left
-                block = board.get(gap.y).get(gap.x+1);
-                board.get(gap.y).set(gap.x, block);
-                board.get(gap.y).set(gap.x+1, 0);
-                ++gap.x;
+                block = result.board.get(gap.y).get(gap.x+1);
+                result.board.get(gap.y).set(gap.x, block);
+                result.board.get(gap.y).set(gap.x+1, 0);
+                ++result.gap.x;
                 break;
         }
-    }
-
-    public void move(List<Direction> dirs){
-        for (Direction dir : dirs) {
-            move(dir);
-        }
+        return result;
     }
 
     public int size() {

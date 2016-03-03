@@ -13,22 +13,22 @@ public class Main {
         System.out.println(he.costLeft(state));
         System.out.println(state);
 
-        state.move(Direction.DOWN);
+        State state1 = state.move(Direction.DOWN);
 
-        System.out.println(state.availableMoves());
-        System.out.println(solv.isSolvable(state));
-        System.out.println(state.inversionCount());
-        System.out.println(he.costLeft(state));
-        System.out.println(state);
+        System.out.println(state1.availableMoves());
+        System.out.println(solv.isSolvable(state1));
+        System.out.println(state1.inversionCount());
+        System.out.println(he.costLeft(state1));
+        System.out.println(state1);
 
-        state.move(Direction.RIGHT);
-        state.move(Direction.RIGHT);
+        State state2 = state1.move(Direction.RIGHT);
+        state2 = state2.move(Direction.RIGHT);
 
-        System.out.println(state.availableMoves());
-        System.out.println(solv.isSolvable(state));
-        System.out.println(state.inversionCount());
-        System.out.println(he.costLeft(state));
-        System.out.println(state);
+        System.out.println(state2.availableMoves());
+        System.out.println(solv.isSolvable(state2));
+        System.out.println(state2.inversionCount());
+        System.out.println(he.costLeft(state2));
+        System.out.println(state2);
 
         List<Integer> list = new ArrayList<Integer>();
         list.add(1);
