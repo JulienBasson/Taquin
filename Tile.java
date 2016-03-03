@@ -3,7 +3,6 @@ import java.awt.Point;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
@@ -12,7 +11,7 @@ public class Tile {
 	private Rectangle square;
 	private String id;
 	private int size;
-	private static final Duration TRANSLATE_DURATION = Duration.seconds(0.25);
+	private static final Duration TRANSLATE_DURATION = Duration.seconds(0.10);
 	private final TranslateTransition transition;
 	private Point coord;
 	
@@ -24,39 +23,48 @@ public class Tile {
 		square.setArcHeight(15);
 		square.setArcWidth(15);
 		square.setOpacity(0.5);
-		setPosition(coord);
 		transition = createTranslateTransition();
-		moveSquareOnMousePress();
+		setPosition(coord);
 	}
 
 	private TranslateTransition createTranslateTransition() {
 		final TranslateTransition transition = new TranslateTransition(TRANSLATE_DURATION, square);
 		transition.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent t) {
-				square.setX(square.getTranslateX() + square.getX());
-				square.setY(square.getTranslateY() + square.getY());
+				square.setX(coord.getX());
+				square.setY(coord.getY());
 				square.setTranslateX(0);
 				square.setTranslateY(0);
 			}
 		});
 		return transition;
 	}
-	
-	private void moveSquareOnMousePress() {
-		square.setOnMousePressed(new EventHandler<MouseEvent>() {
-			@Override public void handle(MouseEvent event) {
-				transition.setToX(event.getSceneX() - square.getX());
-				transition.setToY(event.getSceneY() - square.getY());
-				transition.playFromStart();
-			}
-		});
-	}
 
-	public void setPosition(Point coord){
-		square.setX(coord.getX());
-		square.setY(coord.getY());
+	private void setPosition(Point coord) {
+        transition.setToX(coord.x - this.coord.x);
+        transition.setToY(coord.y - this.coord.y);
 		this.coord = coord;
+		transition.playFromStart();
 	}
+	
+	public void move(Direction dir)	{
+		switch(dir) {
+		case UP:
+			setPosition(new Point(coord.x, coord.y - size));
+			break;
+		case DOWN:
+			setPosition(new Point(coord.x, coord.y + size));
+			break;
+		case LEFT:
+			setPosition(new Point(coord.x - size, coord.y));
+			break;
+		case RIGHT:
+			setPosition(new Point(coord.x + size, coord.y));
+			break;
+		}
+	}
+	
+	
 
 	public Rectangle getSquare() {
 		return square;

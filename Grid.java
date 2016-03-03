@@ -1,20 +1,20 @@
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import javafx.scene.Node;
 
-
 public class Grid {
 
-	private List<Tile> tiles;
+	private Map<Point, Tile> tiles;
 	private final int nbOfTiles;
 	private final int size; //en pixel
 	private State state;
-	
+
 	public Grid(int nbOfTiles, int size, State state) {
-		tiles = new ArrayList<Tile>();
+		tiles = new HashMap<Point, Tile>();
 		this.size = size;
 
 		// ajout excpetion si pas un carre
@@ -33,20 +33,49 @@ public class Grid {
 				currentValue = state.getValue(i,j);
 				if(currentValue == 0)
 					continue;
-				System.out.println(j + " " + i%3);
-				currentPoint = new Point(j*tileSize, i * tileSize);
+				currentPoint = new Point(i*tileSize, j * tileSize);
 				currentTile = new Tile(Integer.toString(currentValue), tileSize, currentPoint);
-				this.tiles.add(currentTile);
+				this.tiles.put(new Point(i,j), currentTile);
 			}
 		}
 	}
 
 	public Collection<Node> getTiles(){
 		Collection<Node> rectangles = new ArrayList<Node>();
-		for(Tile currentTile : tiles) {
+		for(Tile currentTile : tiles.values()) {
 			rectangles.add(currentTile.getSquare());
 		}
 
 		return rectangles;
+	}
+
+	public void move(Direction dir) {
+		if (!state.availableMoves().contains(dir)) return;
+		Point pointToMove = getTileToMove(dir);
+		Tile tile = tiles.remove(pointToMove);
+		tile.move(dir);
+		tiles.put(state.gapPosition(), tile);
+		state = state.move(dir);
+
+	}
+	
+	private Point getTileToMove(Direction dir) {
+		Point gap = state.gapPosition();
+		Point pointToMove = gap;
+		switch(dir) {
+		case UP:
+			pointToMove.y++;
+			break;
+		case DOWN:
+			pointToMove.y--;
+			break;
+		case LEFT:
+			pointToMove.x++;
+			break;
+		case RIGHT:
+			pointToMove.x--;
+			break;
+		}
+		return pointToMove;
 	}
 }

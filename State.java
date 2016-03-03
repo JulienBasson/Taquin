@@ -117,7 +117,7 @@ public class State implements Iterable<Integer> {
     }
 
     public Point gapPosition(){
-        return gap;
+        return new Point(gap);
     }
 
     public int inversionCount(){
