@@ -26,7 +26,10 @@ public class State implements Iterable<Integer> {
     public State(State toCopy){
         this.size = toCopy.size;
         this.gap = new Point(toCopy.gap);
-        this.board = new ArrayList<ArrayList<Integer>>(toCopy.board);
+        this.board = new ArrayList<ArrayList<Integer>>();
+        for (ArrayList<Integer> list : toCopy.board) {
+            this.board.add(new ArrayList<Integer>(list));
+        }
     }
 
     public State(int size, List<Integer> elements){
