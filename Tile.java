@@ -28,9 +28,11 @@ public class Tile {
 		square.setOpacity(0.8);
 		square.setFill(Color.SEAGREEN);
         square.setStroke(Color.WHITE);
-		this.id = new Text(coord.x + size/3, coord.y + size/1.5, id);
+		this.id = new Text(id);
 		this.id.setFont(new Font(size/2));
-		this.id.setFill(Color.SEASHELL);
+		this.id.setX(coord.x + size/(this.id.getText().length() > 1 ? 5 : 3));
+		this.id.setY(coord.y + size/1.5);
+		this.id.setFill(Color.CORNSILK);
 		transitionSquare = createTranslateTransitionSquare();
 		transitionId = createTranslateTransitionId();
 		setPosition(coord);
@@ -75,8 +77,8 @@ public class Tile {
 		final TranslateTransition transition = new TranslateTransition(TRANSLATE_DURATION, square);
 		transition.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent t) {
-				square.setX(coord.getX());
-				square.setY(coord.getY());
+				square.setX(coord.x);
+				square.setY(coord.y);
 				square.setTranslateX(0);
 				square.setTranslateY(0);
 			}
@@ -88,8 +90,8 @@ public class Tile {
 		final TranslateTransition transition = new TranslateTransition(TRANSLATE_DURATION, id);
 		transition.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent t) {
-				id.setX(coord.getX() + size/3);
-				id.setY(coord.getY() + size/1.5);
+				id.setX(coord.x + size/(id.getText().length() > 1 ? 5 : 3));
+				id.setY(coord.y + size/1.5);
 				id.setTranslateX(0);
 				id.setTranslateY(0);
 			}
