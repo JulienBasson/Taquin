@@ -30,7 +30,7 @@ Stratégies :
     - Récursive :
         - Profondeur d'abord : explore les sommets les plus profonds dans l'arbre
         - Largeur d'abord : Explore tous le niveau d'un arbre avant de descendre
-        - Meilleur d'abord : 
+        - Meilleur d'abord :
         - Aléatoire : Parcours un sommet non encore visité
 
 Branch and Bound   | séparation et évaluation de la solution
@@ -70,3 +70,15 @@ http://xaviermichel.github.io/algorithme/2010/08/27/r%C3%A9soudre-le-taquin-%C3%
 https://heuristicswiki.wikispaces.com/Admissible+Heuristic
 https://heuristicswiki.wikispaces.com/IDA*
 https://heuristicswiki.wikispaces.com/Manhattan+Distance
+
+Rapport :
+10 instances :
+	données le nb de cout min
+	tps cpu
+	nb de noeud visités
+	taille max de la struct de données
+
+Outils utilisés
+	version
+	jdk
+	lib externe
