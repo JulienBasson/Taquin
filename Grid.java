@@ -10,7 +10,7 @@ public class Grid {
 
 	private Map<Point, Tile> tiles;
 	private final int nbOfTiles;
-	private final int size; //en pixel
+	private final int size; // pixel size
 	private State state;
 
 	public Grid(int nbOfTiles, int size, State state) {

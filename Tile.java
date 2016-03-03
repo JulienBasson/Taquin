@@ -7,6 +7,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import javafx.scene.text.Text;
 import javafx.scene.text.Font;
+import javafx.scene.paint.Color;
 
 public class Tile {
 
@@ -19,15 +20,17 @@ public class Tile {
 	private Point coord;
 	
 	public Tile(String id, int size, Point coord){
-		
 		this.coord = coord;
 		this.size = size;
 		square = new Rectangle(size, size);
 		square.setArcHeight(25);
 		square.setArcWidth(25);
-		square.setOpacity(0.5);
+		square.setOpacity(0.8);
+		square.setFill(Color.SEAGREEN);
+        square.setStroke(Color.WHITE);
 		this.id = new Text(coord.x + size/3, coord.y + size/1.5, id);
 		this.id.setFont(new Font(size/2));
+		this.id.setFill(Color.SEASHELL);
 		transitionSquare = createTranslateTransitionSquare();
 		transitionId = createTranslateTransitionId();
 		setPosition(coord);

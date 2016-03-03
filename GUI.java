@@ -9,10 +9,12 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import javafx.scene.paint.Color;
 
 public class GUI extends Application {
 	
 	private static Grid grid;
+	private final static double MARGIN_RATE = 1.2;
 	private final static Map<KeyCode, Direction> directions = new HashMap<KeyCode, Direction>();
 	static {
 		directions.put(KeyCode.UP, Direction.UP);
@@ -40,7 +42,7 @@ public class GUI extends Application {
 		}
 		
 		primaryStage.setTitle("Taquin");
-		Scene scene = new Scene(group, size, size);
+		Scene scene = new Scene(group, size * MARGIN_RATE, size * MARGIN_RATE, Color.SEASHELL);
 		moveTileOnKeyPress(scene);
 		primaryStage.setScene(scene);
 		primaryStage.setResizable(false);
