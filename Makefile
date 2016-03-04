@@ -1,2 +1,2 @@
 all:
-	javac -d bin *.java
+	javac -d bin src/*.java
