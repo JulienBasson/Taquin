@@ -55,6 +55,20 @@ public class Grid {
         state = state.move(dir);
     }
 
+    public void move(Point toMove) {
+        int tileSize = size/nbOfTiles;
+        Point gap = state.gapPosition();
+        if (toMove.x/tileSize == gap.x+1 && toMove.y/tileSize == gap.y) {
+            move(Direction.LEFT);
+        } else if (toMove.x/tileSize == gap.x-1 && toMove.y/tileSize == gap.y) {
+            move(Direction.RIGHT);
+        } else if (toMove.x/tileSize == gap.x && toMove.y/tileSize == gap.y-1) {
+            move(Direction.DOWN);
+        } else if (toMove.x/tileSize == gap.x && toMove.y/tileSize == gap.y+1) {
+            move(Direction.UP);
+        }
+    }
+    
     private Point getTileToMove(Direction dir) {
         Point gap = state.gapPosition();
         Point pointToMove = gap;
