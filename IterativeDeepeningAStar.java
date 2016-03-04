@@ -46,7 +46,7 @@ public class IterativeDeepeningAStar implements BenchableAlgorithm {
             State nextNode = node.move(dir);
 
             Path t = search(nextNode,
-                            costAlready + 2,
+                            costAlready + 1.000000000000001,
                             bound, moves);
 
             if (maximumSize < moves.size())
