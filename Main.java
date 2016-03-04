@@ -5,11 +5,6 @@ import java.util.Random;
 import java.io.FileNotFoundException;
 
 public class Main {
-    private static Random rand = new Random(System.currentTimeMillis());
-    private static Direction randomDirection(Set<Direction> set) {
-        List<Direction> setArray = new ArrayList<Direction>(set);
-        return setArray.get(rand.nextInt(set.size()));
-    }
 
     public static void main(String[] args) {
         if (args.length > 0) {
@@ -24,12 +19,9 @@ public class Main {
             State state = new State(orig);
             Algorithm algo = new IterativeDeepeningAStar(orig);
 
+            state.shuffle();
+
             List<Direction> moves = new ArrayList<Direction>();
-            for (int i = 0; i < 100; i++) {
-                Direction nextMove = randomDirection(state.availableMoves());
-                moves.add(nextMove);
-                state = state.move(nextMove);
-            }
             System.out.println(state);
             System.out.println(moves);
             System.out.println(algo.solve(state));

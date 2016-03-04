@@ -140,6 +140,24 @@ public class State implements Iterable<Integer> {
         return total;
     }
 
+    private static Random random = new Random(System.currentTimeMillis());
+    private static Direction randomDirection(Set<Direction> set) {
+        List<Direction> setArray = new ArrayList<Direction>(set);
+        return setArray.get(rand.nextInt(set.size()));
+    }
+    public State shuffle(int moveCount){
+        State result = this;
+        for (int i = 0; i < moveCount; i++) {
+            Direction nextMove = randomDirection(state.availableMoves());
+            result = result.move(nextMove);
+        }
+        return result;
+    }
+    private static final int SHUFFLE_COUNT = 200;
+    public State shuffle(){
+        return shuffle(SHUFFLE_COUNT);
+    }
+
     public String toString() {
         String result = "";
         for (ArrayList<Integer> row : board) {
@@ -180,4 +198,5 @@ public class State implements Iterable<Integer> {
             return val;
         }
     }
+
 }
