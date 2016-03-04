@@ -51,7 +51,6 @@ public class Grid {
 		tile.move(dir);
 		tiles.put(state.gapPosition(), tile);
 		state = state.move(dir);
-
 	}
 	
 	private Point getTileToMove(Direction dir) {
