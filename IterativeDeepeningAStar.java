@@ -35,6 +35,8 @@ public class IterativeDeepeningAStar implements BenchableAlgorithm {
         if (node.equals(target))
             return new Path(previousMoves, costAlready, true);
 
+        ++nbNode;
+
         Path min = new Path(previousMoves, Double.POSITIVE_INFINITY, false);
 
         for (Direction dir : node.availableMoves()) {
@@ -44,9 +46,11 @@ public class IterativeDeepeningAStar implements BenchableAlgorithm {
             State nextNode = node.move(dir);
 
             Path t = search(nextNode,
-                            costAlready + 10,
+                            costAlready + 1,
                             bound, moves);
 
+            if (maximumSize < moves.size())
+                maximumSize = moves.size();
             if (t.found)
                 return t;
             if (t.cost < min.cost)

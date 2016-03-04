@@ -44,7 +44,5 @@ public class Main {
 		System.out.println("Noeuds visites: \t" + algo.getNbNode());
 		System.out.println("Taille maximum de la taille de structure: \t" + algo.getMaximumSize());
 		System.out.println("Temps CPU: \t" + time);
-
-        System.out.println(algo.solve(state));
     }
 }
