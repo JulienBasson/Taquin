@@ -105,11 +105,8 @@ public class Grid {
     public void solve() {
         BenchableAlgorithm algo = new IterativeDeepeningAStar(targetState);
         List<Direction> solution = algo.solve(state);
-        System.out.println("State is solve");
         for(Direction dir : solution){
             move(dir);
-            
         }
-        System.out.println(solution);
     }
 }

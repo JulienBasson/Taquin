@@ -56,15 +56,10 @@ public class GUI extends Application {
         grid = new Grid(nbOfTiles, size, (new State(nbOfTiles)).shuffle());
         //fewestMoves = grid.fewestMoves();
         fewestMoves = 10;
-        System.out.println(fewestMoves);
         primaryStage.setTitle("Taquin Puzzle");
         Scene scene =
             new Scene(createGroup(size), size * MARGIN_RATE, size * MARGIN_RATE, Color.CORNSILK);
         setMovesCounterText(0);
-        
-        
-        
-        
         
         moveTileOnKeyPress(scene);
         moveTileOnMousePress(scene);
@@ -72,9 +67,7 @@ public class GUI extends Application {
         primaryStage.setResizable(false);
         primaryStage.show();
     }
-
     
-
     private Group createGroup(int size) {
         movesCounterText = new Text();
         movesCounterText.setFont(new Font(size / 25));
