@@ -29,10 +29,15 @@ import javafx.stage.Stage;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
+import javafx.scene.control.ToolBar;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.control.Separator;
 
 public class GUI extends Application {
+    private static final int SIZE = 600;
     private static Grid grid;
     private static Text movesCounterText;
+    private static ToolBar toolBar;
     private final static double MARGIN_RATE = 1.2;
     private final static Map<KeyCode, Direction> directions = new HashMap<KeyCode, Direction>();
     private static int fewestMoves;
@@ -50,15 +55,31 @@ public class GUI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        int size = 600;
         int nbOfTiles = selectSize();
-
-        grid = new Grid(nbOfTiles, size, (new State(nbOfTiles)).shuffle());
+        
+        grid = new Grid(nbOfTiles, SIZE, (new State(nbOfTiles)).shuffle());
         //fewestMoves = grid.fewestMoves();
         fewestMoves = 10;
         primaryStage.setTitle("Taquin Puzzle");
-        Scene scene =
-            new Scene(createGroup(size), size * MARGIN_RATE, size * MARGIN_RATE, Color.CORNSILK);
+        
+        BorderPane pane = new BorderPane();
+        movesCounterText = new Text();
+        Button solve = new Button("Solve");
+        solve.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                grid.solve();
+                winnerDialog();
+            }
+        });
+        toolBar = new ToolBar(solve,
+                                      new Separator(),
+                                      movesCounterText);
+        pane.setTop(toolBar);
+        pane.setCenter(createGroup(SIZE));
+        pane.setBackground(new Background(new BackgroundFill(Color.CORNSILK, 
+                                                             CornerRadii.EMPTY, 
+                                                             Insets.EMPTY)));
+        Scene scene = new Scene(pane, SIZE * MARGIN_RATE, SIZE * MARGIN_RATE);
         setMovesCounterText(0);
         
         moveTileOnKeyPress(scene);
@@ -69,31 +90,12 @@ public class GUI extends Application {
     }
     
     private Group createGroup(int size) {
-        movesCounterText = new Text();
-        movesCounterText.setFont(new Font(size / 25));
-        movesCounterText.setX(1 * MARGIN_RATE);
-        movesCounterText.setY(size + movesCounterText.getFont().getSize() * MARGIN_RATE);
-        movesCounterText.setFill(Color.SEAGREEN);
-        Group group = new Group(movesCounterText);
+        Group group = new Group();
         for (Tile tile : grid.getTiles()) {
             group.getChildren().add(tile.getSquare());
             group.getChildren().add(tile.getText());
         }
         
-        Button solveButton = new Button("Solve");
-        solveButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                grid.solve();
-                winnerDialog();
-            }
-        });
-        Background back = new Background(new BackgroundFill(Color.SEAGREEN, new CornerRadii(7), new Insets(5)));
-        solveButton.setBackground(back);
-        solveButton.setFont(new Font(size / 25));
-        solveButton.setLayoutX(MARGIN_RATE);
-        solveButton.setLayoutY(size + solveButton.getFont().getSize() * MARGIN_RATE);
-        
-        group.getChildren().add(solveButton);
         return group;
     }
 
@@ -134,8 +136,8 @@ public class GUI extends Application {
         scene.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                grid.move(new Point((int)Math.round(event.getSceneX()), 
-                                    (int)Math.round(event.getSceneY())));
+                grid.move(new Point((int)Math.round((event.getSceneX() / MARGIN_RATE)), 
+                                    (int)Math.round((event.getSceneY() / MARGIN_RATE) - toolBar.getHeight())));
                 refresh();
             }
         });
@@ -161,10 +163,6 @@ public class GUI extends Application {
                              " moves.");
         alert.showAndWait();
         System.exit(0); // Game is finished
-    }
-
-    private boolean checkMoves(){
-        return fewestMoves <= grid.getMovesCount();
     }
     
     private void refresh() {
