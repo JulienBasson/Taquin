@@ -5,13 +5,19 @@ import java.util.Map;
 import java.util.Optional;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -43,11 +49,18 @@ public class GUI extends Application {
         int nbOfTiles = selectSize();
 
         grid = new Grid(nbOfTiles, size, (new State(nbOfTiles)).shuffle());
-        fewestMoves = grid.fewestMoves();
+        //fewestMoves = grid.fewestMoves();
+        fewestMoves = 10;
+        System.out.println(fewestMoves);
         primaryStage.setTitle("Taquin Puzzle");
         Scene scene =
             new Scene(createGroup(size), size * MARGIN_RATE, size * MARGIN_RATE, Color.CORNSILK);
         setMovesCounterText(0);
+        
+        
+        
+        
+        
         moveTileOnKeyPress(scene);
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
@@ -67,6 +80,20 @@ public class GUI extends Application {
             group.getChildren().add(tile.getSquare());
             group.getChildren().add(tile.getText());
         }
+        
+        Button solveButton = new Button("Solve");
+        solveButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                grid.solve();
+            }
+        });
+        Background back = new Background(new BackgroundFill(Color.SEAGREEN, new CornerRadii(7), new Insets(5)));
+        solveButton.setBackground(back);
+        solveButton.setFont(new Font(size / 25));
+        solveButton.setLayoutX(MARGIN_RATE);
+        solveButton.setLayoutY(size + solveButton.getFont().getSize() * MARGIN_RATE);
+        
+        group.getChildren().add(solveButton);
         return group;
     }
 
@@ -100,6 +127,9 @@ public class GUI extends Application {
                     setMovesCounterText(grid.getMovesCount());
                     if(grid.isFinish()){
                         openPopup("Party finished !!", scene);
+                    }
+                    if(checkMoves()){
+                        movesCounterText.setFill(Color.TOMATO);
                     }
                 }
             }
