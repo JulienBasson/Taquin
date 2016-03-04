@@ -84,6 +84,7 @@ public class GUI extends Application {
         solveButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 grid.solve();
+                winnerDialog();
             }
         });
         Background back = new Background(new BackgroundFill(Color.SEAGREEN, new CornerRadii(7), new Insets(5)));
