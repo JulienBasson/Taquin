@@ -56,15 +56,10 @@ public class GUI extends Application {
         grid = new Grid(nbOfTiles, size, (new State(nbOfTiles)).shuffle());
         //fewestMoves = grid.fewestMoves();
         fewestMoves = 10;
-        System.out.println(fewestMoves);
         primaryStage.setTitle("Taquin Puzzle");
         Scene scene =
             new Scene(createGroup(size), size * MARGIN_RATE, size * MARGIN_RATE, Color.CORNSILK);
         setMovesCounterText(0);
-        
-        
-        
-        
         
         moveTileOnKeyPress(scene);
         moveTileOnMousePress(scene);
@@ -72,9 +67,7 @@ public class GUI extends Application {
         primaryStage.setResizable(false);
         primaryStage.show();
     }
-
     
-
     private Group createGroup(int size) {
         movesCounterText = new Text();
         movesCounterText.setFont(new Font(size / 25));
@@ -91,6 +84,7 @@ public class GUI extends Application {
         solveButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 grid.solve();
+                winnerDialog();
             }
         });
         Background back = new Background(new BackgroundFill(Color.SEAGREEN, new CornerRadii(7), new Insets(5)));
@@ -164,10 +158,9 @@ public class GUI extends Application {
         alert.setTitle("Taquin Puzzle");
         alert.setHeaderText("You win !");
         alert.setContentText("You solve the puzzle in " + grid.getMovesCount() +
-                             " moves.\nThe minimal numbers of moves is: " + 
-                             fewestMoves);
-
+                             " moves.");
         alert.showAndWait();
+        System.exit(0); // Game is finished
     }
 
     private boolean checkMoves(){
