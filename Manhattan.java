@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class Manhattan implements Heuristic {
     private Map<Integer, Point> targetCoords;
     private int size;
-    public Manhattan(State target){
+    public Manhattan(State target) {
         this.targetCoords = new HashMap<Integer, Point>();
         this.size = target.size();
         for (int i = 0; i < target.size(); i++) {
@@ -16,8 +16,8 @@ public class Manhattan implements Heuristic {
         }
     }
 
-    public double costLeft(State state){
-        if(state.size() != size)
+    public double costLeft(State state) {
+        if (state.size() != size)
             return Double.POSITIVE_INFINITY;
 
         int total = 0;
@@ -31,7 +31,7 @@ public class Manhattan implements Heuristic {
         }
         return total;
     }
-    public static double distance(Point a, Point b){
+    public static double distance(Point a, Point b) {
         return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
     }
 }

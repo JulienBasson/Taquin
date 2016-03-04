@@ -9,63 +9,61 @@ import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class ReadFile {
-	private BufferedReader br;
-	private InputStreamReader ipsr;
-	private InputStream ips;
+    private BufferedReader br;
+    private InputStreamReader ipsr;
+    private InputStream ips;
 
-	public ReadFile(String fichier) throws FileNotFoundException {
-		ips = new FileInputStream(fichier);
-		ipsr = new InputStreamReader(ips);
-		br = new BufferedReader(ipsr);
-	}
+    public ReadFile(String fichier) throws FileNotFoundException {
+        ips = new FileInputStream(fichier);
+        ipsr = new InputStreamReader(ips);
+        br = new BufferedReader(ipsr);
+    }
 
-	public Init getDataFile() {
-		List<Integer> init = new ArrayList<Integer>();
-		List<Integer> target = new ArrayList<Integer>();
-		int nbOfLine = 0;
+    public Init getDataFile() {
+        List<Integer> init = new ArrayList<Integer>();
+        List<Integer> target = new ArrayList<Integer>();
+        int nbOfLine = 0;
 
-		// lecture du fichier texte
-		try {
+        // lecture du fichier texte
+        try {
+            String ligne = br.readLine();
+            nbOfLine = Integer.parseInt(ligne.trim());
+            int nbLineActu = 0;
 
-			String ligne = br.readLine();
-			nbOfLine = Integer.parseInt(ligne.trim());
-			int nbLineActu = 0;
+            while (nbLineActu < nbOfLine && (ligne = br.readLine()) != null) {
+                List<String> chars = new ArrayList<String>(Arrays.asList(ligne.split("\\s+")));
+                for (String c : chars) {
+                    init.add(Integer.parseInt(c));
+                }
+                nbLineActu++;
+            }
 
-			while ( nbLineActu < nbOfLine && (ligne = br.readLine()) != null) {
-				List<String> chars = new ArrayList<String>(Arrays.asList(ligne.split("\\s+")));
-				for (String c : chars) {
-					init.add(Integer.parseInt(c));
-				}
-				nbLineActu++;
-			}
-			
-			nbLineActu = 0;
-			while (nbLineActu < nbOfLine && (ligne = br.readLine()) != null) {
-				List<String> chars = new ArrayList<String>(Arrays.asList(ligne.split("\\s+")));
-				for (String c : chars) {
-					target.add(Integer.parseInt(c));
-				}
-				nbLineActu++;
-			}
+            nbLineActu = 0;
+            while (nbLineActu < nbOfLine && (ligne = br.readLine()) != null) {
+                List<String> chars = new ArrayList<String>(Arrays.asList(ligne.split("\\s+")));
+                for (String c : chars) {
+                    target.add(Integer.parseInt(c));
+                }
+                nbLineActu++;
+            }
 
-			br.close();
-		} catch (Exception e) {
-			System.out.println(e.toString());
-		}
+            br.close();
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
 
-		return new ReadFile.Init(nbOfLine, init, target);
-	}
+        return new ReadFile.Init(nbOfLine, init, target);
+    }
 
-	public class Init {
-		public final int size;
-		public final List<Integer> init;
-		public final List<Integer> target;
+    public class Init {
+        public final int size;
+        public final List<Integer> init;
+        public final List<Integer> target;
 
-		public Init(int s, List<Integer> i, List<Integer> t) {
-			this.size = s;
-			this.init = i;
-			this.target = t;
-		}
-	}
-
+        public Init(int s, List<Integer> i, List<Integer> t) {
+            this.size = s;
+            this.init = i;
+            this.target = t;
+        }
+    }
 }
