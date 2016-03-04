@@ -1,16 +1,15 @@
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import javafx.scene.Node;
 
 public class Grid {
     private Map<Point, Tile> tiles;
     private final int nbOfTiles;
     private final int size; // pixel size
     private State state;
+    private State targetState;
     private int nbOfMoves;
 
     public Grid(int nbOfTiles, int size, State state) {
@@ -19,6 +18,7 @@ public class Grid {
         this.nbOfMoves = 0;
         // ajout excpetion si pas un carre
         this.nbOfTiles = nbOfTiles;
+        this.targetState = new State(nbOfTiles);
         this.state = state;
         createTiles(state);
     }
@@ -55,6 +55,20 @@ public class Grid {
         state = state.move(dir);
     }
 
+    public void move(Point toMove) {
+        int tileSize = size/nbOfTiles;
+        Point gap = state.gapPosition();
+        if (toMove.x/tileSize == gap.x+1 && toMove.y/tileSize == gap.y) {
+            move(Direction.LEFT);
+        } else if (toMove.x/tileSize == gap.x-1 && toMove.y/tileSize == gap.y) {
+            move(Direction.RIGHT);
+        } else if (toMove.x/tileSize == gap.x && toMove.y/tileSize == gap.y-1) {
+            move(Direction.DOWN);
+        } else if (toMove.x/tileSize == gap.x && toMove.y/tileSize == gap.y+1) {
+            move(Direction.UP);
+        }
+    }
+    
     private Point getTileToMove(Direction dir) {
         Point gap = state.gapPosition();
         Point pointToMove = gap;
@@ -84,7 +98,21 @@ public class Grid {
     }
     
     public int fewestMoves() {
-        Algorithm algo = new IterativeDeepeningAStar(state);
-        return algo.solve(state).size();
+       Algorithm algo = new IterativeDeepeningAStar(targetState);
+       return algo.solve(state).size();
+    }
+
+    public void solve() {
+        Algorithm algo = new IterativeDeepeningAStar(targetState);
+        List<Direction> solution = algo.solve(state);
+        
+        for(Direction dir : solution){
+            move(dir);
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

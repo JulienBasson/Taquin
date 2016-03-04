@@ -4,20 +4,31 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import java.awt.Point;
+
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.ImageView;
 
 public class GUI extends Application {
     private static Grid grid;
@@ -43,12 +54,20 @@ public class GUI extends Application {
         int nbOfTiles = selectSize();
 
         grid = new Grid(nbOfTiles, size, (new State(nbOfTiles)).shuffle());
-        fewestMoves = grid.fewestMoves();
+        //fewestMoves = grid.fewestMoves();
+        fewestMoves = 10;
+        System.out.println(fewestMoves);
         primaryStage.setTitle("Taquin Puzzle");
         Scene scene =
             new Scene(createGroup(size), size * MARGIN_RATE, size * MARGIN_RATE, Color.CORNSILK);
         setMovesCounterText(0);
+        
+        
+        
+        
+        
         moveTileOnKeyPress(scene);
+        moveTileOnMousePress(scene);
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
@@ -67,6 +86,20 @@ public class GUI extends Application {
             group.getChildren().add(tile.getSquare());
             group.getChildren().add(tile.getText());
         }
+        
+        Button solveButton = new Button("Solve");
+        solveButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                grid.solve();
+            }
+        });
+        Background back = new Background(new BackgroundFill(Color.SEAGREEN, new CornerRadii(7), new Insets(5)));
+        solveButton.setBackground(back);
+        solveButton.setFont(new Font(size / 25));
+        solveButton.setLayoutX(MARGIN_RATE);
+        solveButton.setLayoutY(size + solveButton.getFont().getSize() * MARGIN_RATE);
+        
+        group.getChildren().add(solveButton);
         return group;
     }
 
@@ -97,10 +130,7 @@ public class GUI extends Application {
             public void handle(KeyEvent event) {
                 if (directions.containsKey(event.getCode())){
                     grid.move(directions.get(event.getCode()));
-                    setMovesCounterText(grid.getMovesCount());
-                    if(grid.isFinish()){
-                        openPopup("Party finished !!", scene);
-                    }
+                    refresh();
                 }
             }
         });
@@ -110,7 +140,9 @@ public class GUI extends Application {
         scene.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                // TODO
+                grid.move(new Point((int)Math.round(event.getSceneX()), 
+                                    (int)Math.round(event.getSceneY())));
+                refresh();
             }
         });
     }
@@ -126,7 +158,26 @@ public class GUI extends Application {
         dialog.show();
     }
 
+    private void winnerDialog() {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setGraphic(new ImageView(this.getClass().getResource("crown.gif").toString()));
+        alert.setTitle("Taquin Puzzle");
+        alert.setHeaderText("You win !");
+        alert.setContentText("You solve the puzzle in " + grid.getMovesCount() +
+                             " moves.\nThe minimal numbers of moves is: " + 
+                             fewestMoves);
+
+        alert.showAndWait();
+    }
+
     private boolean checkMoves(){
         return fewestMoves <= grid.getMovesCount();
+    }
+    
+    private void refresh() {
+        setMovesCounterText(grid.getMovesCount());
+        if(grid.isFinish()){
+            winnerDialog();
+        }
     }
 }
