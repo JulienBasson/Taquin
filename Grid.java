@@ -103,16 +103,13 @@ public class Grid {
     }
 
     public void solve() {
-        Algorithm algo = new IterativeDeepeningAStar(targetState);
+        BenchableAlgorithm algo = new IterativeDeepeningAStar(targetState);
         List<Direction> solution = algo.solve(state);
-        
+        System.out.println("State is solve");
         for(Direction dir : solution){
             move(dir);
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            
         }
+        System.out.println(solution);
     }
 }
