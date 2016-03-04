@@ -89,11 +89,16 @@ public class Grid {
     }
 
     public void solve() {
-        //Algorithm algo = new IterativeDeepeningAStar(targetState);
-        //List<Direction> solution = algo.solve(state);
+        Algorithm algo = new IterativeDeepeningAStar(targetState);
+        List<Direction> solution = algo.solve(state);
         
-        //for(Direction dir : solution){
-        //    move(dir);
-       // }
+        for(Direction dir : solution){
+            move(dir);
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
