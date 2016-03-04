@@ -158,10 +158,9 @@ public class GUI extends Application {
         alert.setTitle("Taquin Puzzle");
         alert.setHeaderText("You win !");
         alert.setContentText("You solve the puzzle in " + grid.getMovesCount() +
-                             " moves.\nThe minimal numbers of moves is: " + 
-                             fewestMoves);
-
+                             " moves.");
         alert.showAndWait();
+        System.exit(0); // Game is finished
     }
 
     private boolean checkMoves(){
