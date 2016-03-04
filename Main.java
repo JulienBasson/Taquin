@@ -14,16 +14,12 @@ public class Main {
                 e.printStackTrace();
             }
         } else {
-            State orig = new State(5);
+            State orig = new State(3);
             System.out.println(orig);
             State state = new State(orig);
             Algorithm algo = new IterativeDeepeningAStar(orig);
-
-            state.shuffle();
-
-            List<Direction> moves = new ArrayList<Direction>();
+            state = state.shuffle();
             System.out.println(state);
-            System.out.println(moves);
             System.out.println(algo.solve(state));
         }
     }

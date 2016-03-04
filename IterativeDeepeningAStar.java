@@ -37,7 +37,7 @@ public class IterativeDeepeningAStar implements Algorithm {
             State nextNode = node.move(dir);
 
             Path t = search(nextNode,
-                costAlready + moves.size(), // step cost is how far we are from root
+                costAlready + 10,
                 bound, moves);
 
             if (t.found)
