@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import java.awt.Point;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,6 +26,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.ImageView;
 
 public class GUI extends Application {
     private static Grid grid;
@@ -62,6 +67,7 @@ public class GUI extends Application {
         
         
         moveTileOnKeyPress(scene);
+        moveTileOnMousePress(scene);
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
@@ -124,13 +130,7 @@ public class GUI extends Application {
             public void handle(KeyEvent event) {
                 if (directions.containsKey(event.getCode())){
                     grid.move(directions.get(event.getCode()));
-                    setMovesCounterText(grid.getMovesCount());
-                    if(grid.isFinish()){
-                        openPopup("Party finished !!", scene);
-                    }
-                    if(checkMoves()){
-                        movesCounterText.setFill(Color.TOMATO);
-                    }
+                    refresh();
                 }
             }
         });
@@ -140,7 +140,9 @@ public class GUI extends Application {
         scene.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                // TODO
+                grid.move(new Point((int)Math.round(event.getSceneX()), 
+                                    (int)Math.round(event.getSceneY())));
+                refresh();
             }
         });
     }
@@ -156,7 +158,26 @@ public class GUI extends Application {
         dialog.show();
     }
 
+    private void winnerDialog() {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setGraphic(new ImageView(this.getClass().getResource("crown.gif").toString()));
+        alert.setTitle("Taquin Puzzle");
+        alert.setHeaderText("You win !");
+        alert.setContentText("You solve the puzzle in " + grid.getMovesCount() +
+                             " moves.\nThe minimal numbers of moves is: " + 
+                             fewestMoves);
+
+        alert.showAndWait();
+    }
+
     private boolean checkMoves(){
         return fewestMoves <= grid.getMovesCount();
+    }
+    
+    private void refresh() {
+        setMovesCounterText(grid.getMovesCount());
+        if(grid.isFinish()){
+            winnerDialog();
+        }
     }
 }
