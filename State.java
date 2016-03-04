@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.Iterator;
@@ -143,12 +144,12 @@ public class State implements Iterable<Integer> {
     private static Random random = new Random(System.currentTimeMillis());
     private static Direction randomDirection(Set<Direction> set) {
         List<Direction> setArray = new ArrayList<Direction>(set);
-        return setArray.get(rand.nextInt(set.size()));
+        return setArray.get(random.nextInt(set.size()));
     }
     public State shuffle(int moveCount){
         State result = this;
         for (int i = 0; i < moveCount; i++) {
-            Direction nextMove = randomDirection(state.availableMoves());
+            Direction nextMove = randomDirection(result.availableMoves());
             result = result.move(nextMove);
         }
         return result;

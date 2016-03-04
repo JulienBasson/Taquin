@@ -1,28 +1,31 @@
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.control.ChoiceDialog;
-import java.util.Optional;
-import javafx.scene.text.Text;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class GUI extends Application {
     private static Grid grid;
     private static Text movesCounterText;
     private final static double MARGIN_RATE = 1.2;
     private final static Map<KeyCode, Direction> directions = new HashMap<KeyCode, Direction>();
+    private static int fewestMoves;
+    
     static {
         directions.put(KeyCode.UP, Direction.UP);
         directions.put(KeyCode.DOWN, Direction.DOWN);
@@ -39,7 +42,8 @@ public class GUI extends Application {
         int size = 600;
         int nbOfTiles = selectSize();
 
-        grid = new Grid(nbOfTiles, size, new State(nbOfTiles));
+        grid = new Grid(nbOfTiles, size, (new State(nbOfTiles)).shuffle());
+        fewestMoves = grid.fewestMoves();
         primaryStage.setTitle("Taquin Puzzle");
         Scene scene =
             new Scene(createGroup(size), size * MARGIN_RATE, size * MARGIN_RATE, Color.CORNSILK);
@@ -50,11 +54,7 @@ public class GUI extends Application {
         primaryStage.show();
     }
 
-    private int fewestMoves(int size) {
-        State orig = new State(size);
-        Algorithm algo = new IterativeDeepeningAStar(orig);
-        return algo.solve(orig).size();
-    }
+    
 
     private Group createGroup(int size) {
         movesCounterText = new Text();
@@ -87,7 +87,7 @@ public class GUI extends Application {
         return 3;
     }
 
-    public static void setMovesCounterText(int nbMoves) {
+    private void setMovesCounterText(int nbMoves) {
         movesCounterText.setText("Number of moves: " + nbMoves);
     }
 
@@ -95,8 +95,13 @@ public class GUI extends Application {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                if (directions.containsKey(event.getCode()))
+                if (directions.containsKey(event.getCode())){
                     grid.move(directions.get(event.getCode()));
+                    setMovesCounterText(grid.getMovesCount());
+                    if(grid.isFinish()){
+                        openPopup("Party finished !!", scene);
+                    }
+                }
             }
         });
     }
@@ -108,5 +113,20 @@ public class GUI extends Application {
                 // TODO
             }
         });
+    }
+    
+    private void openPopup(String text, Scene scene) {
+        final Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(scene.getWindow());
+        VBox dialogVbox = new VBox(20);
+        dialogVbox.getChildren().add(new Text(text));
+        Scene dialogScene = new Scene(dialogVbox, 150, 150);
+        dialog.setScene(dialogScene);
+        dialog.show();
+    }
+
+    private boolean checkMoves(){
+        return fewestMoves <= grid.getMovesCount();
     }
 }

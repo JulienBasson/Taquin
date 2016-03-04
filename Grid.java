@@ -11,11 +11,12 @@ public class Grid {
     private final int nbOfTiles;
     private final int size; // pixel size
     private State state;
+    private int nbOfMoves;
 
     public Grid(int nbOfTiles, int size, State state) {
         tiles = new HashMap<Point, Tile>();
         this.size = size;
-
+        this.nbOfMoves = 0;
         // ajout excpetion si pas un carre
         this.nbOfTiles = nbOfTiles;
         this.state = state;
@@ -46,6 +47,7 @@ public class Grid {
     public void move(Direction dir) {
         if (!state.availableMoves().contains(dir))
             return;
+        ++nbOfMoves;
         Point pointToMove = getTileToMove(dir);
         Tile tile = tiles.remove(pointToMove);
         tile.move(dir);
@@ -71,5 +73,18 @@ public class Grid {
                 break;
         }
         return pointToMove;
+    }
+
+    public int getMovesCount(){
+        return nbOfMoves;
+    }
+    
+    public boolean isFinish(){
+        return state.equals(new State(nbOfTiles));
+    }
+    
+    public int fewestMoves() {
+        Algorithm algo = new IterativeDeepeningAStar(state);
+        return algo.solve(state).size();
     }
 }
