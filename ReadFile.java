@@ -26,26 +26,32 @@ public class ReadFile {
 
         // lecture du fichier texte
         try {
-            String ligne = br.readLine();
+            String ligne = br.readLine().trim();
             nbOfLine = Integer.parseInt(ligne.trim());
             int nbLineActu = 0;
 
-            while (nbLineActu < nbOfLine && (ligne = br.readLine()) != null) {
+            while (nbLineActu < nbOfLine && (ligne = br.readLine().trim()) != null) {
                 List<String> chars = new ArrayList<String>(Arrays.asList(ligne.split("\\s+")));
+                
                 for (String c : chars) {
                     init.add(Integer.parseInt(c));
                 }
+                
                 nbLineActu++;
             }
 
             nbLineActu = 0;
-            while (nbLineActu < nbOfLine && (ligne = br.readLine()) != null) {
+            while (nbLineActu < nbOfLine && (ligne = br.readLine().trim()) != null) {
                 List<String> chars = new ArrayList<String>(Arrays.asList(ligne.split("\\s+")));
+                
                 for (String c : chars) {
-                    target.add(Integer.parseInt(c));
+                        target.add(Integer.parseInt(c));
                 }
+                
                 nbLineActu++;
             }
+            
+    
 
             br.close();
         } catch (Exception e) {
